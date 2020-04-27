@@ -1,8 +1,4 @@
 const knex = require("knex");
-const knexfile = require("../knexfile");
+const configOptions = require("../knexfile").development;
 
-const environment = process.nextTick.DB_ENV || "development";
-
-const db =  knex(knexfile[environment]);
-
-module.exports = db;
+module.exports = knex(configOptions);
