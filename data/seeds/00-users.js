@@ -5,11 +5,11 @@ exports.seed = function(knex) {
     .then(function () {      
     // Inserts seed entries
       return knex('users').insert([
-        {id: 1, name: 'Val', password: 'qwerty', department: 'Performative Wokeness'},
-        {id: 2, name: 'Shawn', password: 'qwerty', department: 'Toxic Masculinity'},
-        {id: 3, name: 'Chris', password: 'qwerty', department: 'Children’s Dance Recital'},
-        {id: 4, name: 'Janet', password: 'qwerty', department: 'Children’s Dance Recital'},
-        {id: 5, name: 'Trevor', password: 'qwerty', department: 'Performative Wokeness'}
+        {id: 1, username: 'Val', password: 'qwerty', department: 'Performative Wokeness'},
+        {id: 2, username: 'Shawn', password: 'qwerty', department: 'Toxic Masculinity'},
+        {id: 3, username: 'Chris', password: 'qwerty', department: 'Children’s Dance Recital'},
+        {id: 4, username: 'Janet', password: 'qwerty', department: 'Children’s Dance Recital'},
+        {id: 5, username: 'Trevor', password: 'qwerty', department: 'Performative Wokeness'}
       ]);
     });
 };

@@ -2,9 +2,9 @@
 exports.up = function(knex) {
   return knex.schema.createTable("users", tbl => {
     tbl.increments();
-    tbl.varchar("name", 128).notNullable().unique();
-    tbl.varchar("password", 128).notNullable();
-    tbl.text("department", 128);
+    tbl.string("username", 128).notNullable().unique();
+    tbl.string("password", 128).notNullable();
+    tbl.string("department", 128);
   });
 };
 

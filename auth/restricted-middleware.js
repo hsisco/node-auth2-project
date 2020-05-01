@@ -1,23 +1,10 @@
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
-const Users = require('../users/helpers');
+// const Helpers = require('../users/helpers');
 
 module.exports = (req, res, next) => {
-  const { name, password } = req.headers;
-
-  if (name && password) {
-    Users.findBy({ name })
-      .first()
-      .then(user => {
-        if (user && bcrypt.compareSync(password, user.password)) {
-          next();
-        } else {
-          res.status(401).json({ message: 'Invalid Credentials' });
-        }
-      })
-      .catch(error => {
-        res.status(500).json({ message: 'Ran into an unexpected error' });
-      });
+  if (req.headers.token) {
+    next();
   } else {
     res.status(400).json({ message: 'No credentials provided' });
   }

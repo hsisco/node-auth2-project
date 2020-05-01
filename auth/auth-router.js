@@ -1,40 +1,51 @@
 const router = require('express').Router();
+
 const bcrypt = require('bcryptjs');
 
-const Users = require('../users/helpers');
+const Helpers = require('../users/helpers');
 
-// for endpoints beginning with /api/auth
-router.post('/register', (req, res) => {
-  let user = req.body;
+const generateToken = require('./generate-token')
+
+
+// REGISTER
+router.post('/api/register', (req, res) => {
+  const user = req.body;
+
   const hash = bcrypt.hashSync(user.password, 10);
   user.password = hash;
 
-  Users.add(user)
-    .then(saved => {
-      res.status(201).json(saved);
-    })
-    .catch(error => {
-      res.status(500).json(error);
-    });
+  Helpers.add(user)
+    .then(saved => res.status(201).json(saved))
+    .catch(err => res.status(500).json(err))
 });
 
-router.post('/login', (req, res) => {
-  let { name, password } = req.body;
+// LOGIN
+router.post('/api/login', (req, res) => {
+  let { username, password } = req.body;
 
-  Users.findBy({ name })
-    .first()
-    .then(user => {
+  Helpers.findBy({ username })
+    .then(async (user) => {
+      console.log(user);
       if (user && bcrypt.compareSync(password, user.password)) {
-        res.status(200).json({
-          message: `Welcome ${user.name}!`,
-        });
+        const token = await generateToken(user)
+        res.status(200).json({ message: `Welcome, ${user.username}!` })
       } else {
-        res.status(401).json({ message: 'Invalid Credentials' });
+        res.status(401).json({ message: 'You shall not pass!' })
       }
     })
-    .catch(error => {
-      res.status(500).json(error);
-    });
+    .catch(err => res.status(500).json({ message: 'You shall not pass!', err })
+    )
+});
+
+// GET ALL USERS
+router.get('/api/users', (req, res) => {
+  Helpers.find()
+    .then(users => res.json(users.username, users.department))
+    .catch(err => {
+      res.status(500).json({ message: 'You shall not pass!', err })
+    console.log(err)
+    }
+    )
 });
 
 module.exports = router;
